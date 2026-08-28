@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import logo from "./assets/logo.jpg";
+import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 
 /* ── useScrollReveal ────────────────────────────────────────── */
 function useScrollReveal() {
@@ -31,7 +33,7 @@ function Nav() {
     <>
       <nav className={`nav${scrolled ? " scrolled" : ""}`}>
         <a href="#hero" className="nav-logo">
-          Heaven Furniture Mart
+          <img src={logo} alt="Heaven Furniture Mart" className="nav-logo-img" />
           <span>Designed · Crafted · Customized</span>
         </a>
         <div className="nav-links">
@@ -47,7 +49,7 @@ function Nav() {
             Get a Quote
           </a>
         </div>
-        <div className="nav-hamburger" onClick={() => setOpen(true)}>
+        <div className="nav-hamburger" onClick={() => setOpen(prev => !prev)}>
           <span /><span /><span />
         </div>
       </nav>
@@ -90,7 +92,7 @@ function Hero() {
             target="_blank"
             rel="noreferrer"
           >
-            <span>📲</span> WhatsApp Us
+            Contact Us
           </a>
           <a href="#collections" className="btn-outline">View Collections</a>
         </div>
@@ -129,12 +131,12 @@ function BrandIntro() {
 
 /* ── Why Choose ─────────────────────────────────────────────── */
 const WHY_ITEMS = [
-  { icon: "🎨", title: "Free Design Consultation", text: "Tell us your vision. Our team will guide you through materials, dimensions, and finishes — at no cost." },
-  { icon: "🪵", title: "Premium Materials", text: "Only quality wood and upholstery make it into our workshop. Crafted by skilled in-house artisans." },
-  { icon: "📐", title: "Built to Your Space", text: "Every piece is made to your exact measurements and style — not a single item is mass-produced." },
-  { icon: "🏬", title: "Large Showroom", text: "Visit our showroom on Agrabad Access Road, Chattogram to see and feel the quality in person." },
-  { icon: "🚚", title: "Delivery & Installation", text: "We handle everything — delivery to your door and full installation by our own crew." },
-  { icon: "💳", title: "Easy Payment Options", text: "Flexible payment plans so your dream home doesn't have to wait." },
+  { title: "Free Design Consultation", text: "Tell us your vision. Our team will guide you through materials, dimensions, and finishes — at no cost." },
+  { title: "Premium Materials", text: "Only quality wood and upholstery make it into our workshop. Crafted by skilled in-house artisans." },
+  { title: "Built to Your Space", text: "Every piece is made to your exact measurements and style — not a single item is mass-produced." },
+  { title: "Large Showroom", text: "Visit our showroom on Agrabad Access Road, Chattogram to see and feel the quality in person." },
+  { title: "Delivery & Installation", text: "We handle everything — delivery to your door and full installation by our own crew." },
+  { title: "Easy Payment Options", text: "Flexible payment plans so your dream home doesn't have to wait." },
 ];
 
 function WhyChoose() {
@@ -153,7 +155,7 @@ function WhyChoose() {
               className="why-card reveal"
               style={{ transitionDelay: `${i * 0.08}s` }}
             >
-              <div className="why-icon">{item.icon}</div>
+              <span className="why-rule" />
               <h3 className="why-title serif">{item.title}</h3>
               <p className="why-text">{item.text}</p>
             </div>
@@ -371,9 +373,9 @@ function CTABanner() {
           target="_blank"
           rel="noreferrer"
         >
-          <span>📲</span> WhatsApp for a Free Consultation
+          WhatsApp for a Free Consultation
         </a>
-        <p className="cta-subtext">Or call us: +880 1960-481983 · Agrabad Access Road, Chattogram</p>
+        <p className="cta-subtext"><strong>Or call us: +880 1960-481983 · Agrabad Access Road, Chattogram</strong></p>
       </div>
     </section>
   );
@@ -412,9 +414,18 @@ function Footer() {
         <div className="footer-bottom">
           <p className="footer-copy">© 2026 Heaven Furniture Mart. All rights reserved.</p>
           <div className="social-row">
-            <a href="https://facebook.com/HeavenFurnitureMart" className="social-link" target="_blank" rel="noreferrer" aria-label="Facebook">f</a>
-            <a href="https://instagram.com/heaven_furniture_ltd" className="social-link" target="_blank" rel="noreferrer" aria-label="Instagram">ig</a>
-            <a href="https://youtube.com/@HeavenFurnitureMart" className="social-link" target="_blank" rel="noreferrer" aria-label="YouTube">yt</a>
+            <a href="https://facebook.com/HeavenFurnitureMart" className="social-link" target="_blank" rel="noreferrer" aria-label="Facebook">
+              <FaFacebookF />
+            </a>
+            <a href="https://instagram.com/heaven_furniture_ltd" className="social-link" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <FaInstagram />
+            </a>
+            <a href="https://youtube.com/@HeavenFurnitureMart" className="social-link" target="_blank" rel="noreferrer" aria-label="YouTube">
+              <FaYoutube />
+            </a>
+            <a href="https://wa.me/8801960481983" className="social-link" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+              <FaWhatsapp />
+            </a>
           </div>
         </div>
       </div>
