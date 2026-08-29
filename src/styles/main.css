@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
 
 
 /* ── Reset ─────────────────────────────────────────────────── */
@@ -15,14 +16,20 @@ html {
 }
 
 body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
     background: #F5F0E8;
     color: #3D2B1F;
     -webkit-font-smoothing: antialiased;
 }
 
 .serif {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
+}
+
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
 }
 
 /* ── Scroll Reveal ─────────────────────────────────────────── */
@@ -111,7 +118,7 @@ body {
 }
 
 .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: 1.35rem;
     font-weight: 500;
     color: #FAFAF8;
@@ -121,21 +128,11 @@ body {
 }
 
 .nav-logo-img {
-    height: 36px;
+    height: 52px;
     width: auto;
+    max-width: 200px;
     object-fit: contain;
     display: block;
-    filter: brightness(1.2)
-}
-
-.nav-logo span {
-    display: block;
-    font-size: 0.6rem;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #B8965A;
 }
 
 .nav-links {
@@ -204,7 +201,7 @@ body {
 
 .mobile-menu a {
     color: #F5F0E8;
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: 1.25rem;
     font-weight: 400;
     text-decoration: none;
@@ -284,6 +281,7 @@ body {
 
 .hero-headline em {
     font-style: italic;
+    font-weight: 400;
     color: #C4A882;
 }
 
@@ -444,7 +442,7 @@ body {
 }
 
 .section-headline {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 400;
     color: #3D2B1F;
@@ -477,7 +475,7 @@ body {
 }
 
 .pull-quote {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: clamp(1.15rem, 2.5vw, 1.45rem);
     font-style: italic;
     font-weight: 400;
@@ -493,7 +491,7 @@ body {
 .pull-quote cite {
     display: block;
     margin-top: 1rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
     font-style: normal;
     font-size: 0.78rem;
     font-weight: 500;
@@ -534,7 +532,7 @@ body {
 }
 
 .why-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: 1.2rem;
     font-weight: 500;
     color: #F5F0E8;
@@ -548,12 +546,15 @@ body {
     line-height: 1.75;
 }
 
-.why-rule {
+.why-numeral {
     display: block;
-    width: 24px;
-    height: 1px;
-    background: #B8965A;
-    margin-bottom: 1.25rem;
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: #B8965A;
+    opacity: 0.7;
+    margin-bottom: 1rem;
 }
 
 @media (max-width: 900px) {
@@ -629,7 +630,7 @@ body {
 }
 
 .coll-title {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: clamp(1.8rem, 3vw, 2.5rem);
     font-weight: 400;
     color: #3D2B1F;
@@ -660,6 +661,60 @@ body {
 
     .coll-img {
         min-height: 280px;
+    }
+}
+
+/* ── Catalog CTA ────────────────────────────────────────────── */
+.coll-catalog {
+    background: #FAFAF8;
+    text-align: center;
+    padding: 4rem 3rem 0rem;
+    border-top: 1px solid rgba(61, 43, 31, 0.08);
+}
+
+.coll-catalog-text {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #3D2B1F;
+    opacity: 0.7;
+    max-width: 420px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+}
+
+.btn-catalog {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid #B8965A;
+    color: #B8965A;
+    background: transparent;
+    padding: 0.9rem 2.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.btn-catalog::after {
+    content: '→';
+    transition: transform 0.25s ease;
+}
+
+.btn-catalog:hover {
+    background: #B8965A;
+    color: #1C2226;
+}
+
+.btn-catalog:hover::after {
+    transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+    .coll-catalog {
+        padding: 3rem 1.5rem 2rem;
     }
 }
 
@@ -696,7 +751,7 @@ body {
 }
 
 .bespoke-headline {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: clamp(2.2rem, 4vw, 3.5rem);
     font-weight: 300;
     color: #F5F0E8;
@@ -730,7 +785,7 @@ body {
 }
 
 .step-num {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: 2rem;
     font-weight: 300;
     color: #B8965A;
@@ -741,7 +796,7 @@ body {
 }
 
 .step-content h4 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: 1.05rem;
     font-weight: 500;
     color: #F5F0E8;
@@ -790,6 +845,15 @@ body {
     flex: 1;
     padding: 0 1.5rem;
     position: relative;
+    cursor: default;
+}
+
+.milestone:hover .milestone-year {
+    color: #CBA96E;
+}
+
+.milestone:hover .milestone-text {
+    opacity: 1;
 }
 
 .milestone-dot {
@@ -810,6 +874,11 @@ body {
     margin-bottom: 0.5rem;
     text-align: center;
     font-variant-numeric: lining-nums tabular-nums;
+    transition: color 0.3s ease;
+}
+
+.milestone:hover .milestone-year {
+    color: #CBA96E;
 }
 
 .milestone-text {
@@ -819,6 +888,11 @@ body {
     opacity: 0.75;
     line-height: 1.65;
     text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.milestone:hover .milestone-text {
+    opacity: 1;
 }
 
 @media (max-width: 768px) {
@@ -849,6 +923,7 @@ body {
     }
 }
 
+
 /* ── Social Proof ──────────────────────────────────────────── */
 .proof {
     background: #1C2226;
@@ -874,7 +949,7 @@ body {
 }
 
 .proof-quote {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: clamp(1.2rem, 2.5vw, 1.6rem);
     font-weight: 400;
     font-style: italic;
@@ -898,7 +973,7 @@ body {
 }
 
 .stat-num {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Libre Baskerville', serif;
     font-size: 2.5rem;
     font-weight: 400;
     color: #F5F0E8;
@@ -956,6 +1031,51 @@ body {
     }
 }
 
+/* ── Showroom Map ───────────────────────────────────────────── */
+.showroom-map {
+    background: #F5F0E8;
+}
+
+.showroom-address {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #3D2B1F;
+    opacity: 0.65;
+    margin-top: 1rem;
+    letter-spacing: 0.03em;
+}
+
+.showroom-address a {
+    color: #B8965A;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.showroom-address a:hover {
+    opacity: 0.75;
+}
+
+.map-wrapper {
+    width: 100%;
+    border-radius: 0;
+    overflow: hidden;
+    border: 1px solid rgba(61, 43, 31, 0.1);
+    box-shadow: 0 8px 40px rgba(28, 34, 38, 0.08);
+}
+
+.map-wrapper iframe {
+    width: 100%;
+    height: 460px;
+    border: none;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .map-wrapper iframe {
+        height: 300px;
+    }
+}
+
 /* ── Footer ────────────────────────────────────────────────── */
 .footer {
     background: #1C2226;
@@ -969,20 +1089,12 @@ body {
     margin-bottom: 3.5rem;
 }
 
-.footer-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: #F5F0E8;
-    margin-bottom: 0.4rem;
-}
-
-.footer-logo-sub {
-    font-size: 0.6rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: #B8965A;
-    margin-bottom: 1.25rem;
+.footer-logo-img {
+    height: 70px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+    display: block;
 }
 
 .footer-desc {

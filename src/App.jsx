@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import logo from "./assets/logo.jpg";
+import logo from "./assets/logo.png";
 import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 
 /* ── useScrollReveal ────────────────────────────────────────── */
@@ -7,7 +7,14 @@ function useScrollReveal() {
   useEffect(() => {
     const els = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
     const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("visible"); }),
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visible");
+          } else {
+            e.target.classList.remove("visible");
+          }
+        }),
       { threshold: 0.12 }
     );
     els.forEach((el) => io.observe(el));
@@ -34,7 +41,6 @@ function Nav() {
       <nav className={`nav${scrolled ? " scrolled" : ""}`}>
         <a href="#hero" className="nav-logo">
           <img src={logo} alt="Heaven Furniture Mart" className="nav-logo-img" />
-          <span>Designed · Crafted · Customized</span>
         </a>
         <div className="nav-links">
           {links.map((l, i) => (
@@ -94,7 +100,7 @@ function Hero() {
           >
             Contact Us
           </a>
-          <a href="#collections" className="btn-outline">View Collections</a>
+          <a href="#collections" className="btn-outline">Explore Our Work</a>
         </div>
       </div>
       <div className="hero-scroll">
@@ -131,12 +137,12 @@ function BrandIntro() {
 
 /* ── Why Choose ─────────────────────────────────────────────── */
 const WHY_ITEMS = [
-  { title: "Free Design Consultation", text: "Tell us your vision. Our team will guide you through materials, dimensions, and finishes — at no cost." },
-  { title: "Premium Materials", text: "Only quality wood and upholstery make it into our workshop. Crafted by skilled in-house artisans." },
-  { title: "Built to Your Space", text: "Every piece is made to your exact measurements and style — not a single item is mass-produced." },
-  { title: "Large Showroom", text: "Visit our showroom on Agrabad Access Road, Chattogram to see and feel the quality in person." },
-  { title: "Delivery & Installation", text: "We handle everything — delivery to your door and full installation by our own crew." },
-  { title: "Easy Payment Options", text: "Flexible payment plans so your dream home doesn't have to wait." },
+  { num: "I", title: "Free Design Consultation", text: "Tell us your vision. Our team will guide you through materials, dimensions, and finishes — at no cost." },
+  { num: "II", title: "Premium Materials", text: "Only quality wood and upholstery make it into our workshop. Crafted by skilled in-house artisans." },
+  { num: "III", title: "Built to Your Space", text: "Every piece is made to your exact measurements and style — not a single item is mass-produced." },
+  { num: "IV", title: "Large Showroom", text: "Visit our showroom on Agrabad Access Road, Chattogram to see and feel the quality in person." },
+  { num: "V", title: "Delivery & Installation", text: "We handle everything — delivery to your door and full installation by our own crew." },
+  { num: "VI", title: "Easy Payment Options", text: "Flexible payment plans so your dream home doesn't have to wait." },
 ];
 
 function WhyChoose() {
@@ -155,7 +161,7 @@ function WhyChoose() {
               className="why-card reveal"
               style={{ transitionDelay: `${i * 0.08}s` }}
             >
-              <span className="why-rule" />
+              <span className="why-numeral serif">{item.num}</span>
               <h3 className="why-title serif">{item.title}</h3>
               <p className="why-text">{item.text}</p>
             </div>
@@ -228,6 +234,19 @@ function Collections() {
           </div>
         </div>
       ))}
+            <div className="coll-catalog reveal">
+          <p className="coll-catalog-text">
+            Explore our complete range of bespoke furniture — from living room to office, every piece built to order.
+          </p>
+          
+          <a href="https://wa.me/8801960481983?text=Hi%2C%20I%27d%20like%20to%20view%20the%20full%20furniture%20catalog."
+            className="btn-catalog"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Full Catalog
+          </a>
+        </div>
     </section>
   );
 }
@@ -364,7 +383,7 @@ function CTABanner() {
       <div className="container-sm reveal">
         <p className="section-eyebrow" style={{ color: "#1C2226" }}>Ready to Begin?</p>
         <h2 className="section-headline serif">Let's Build Something Beautiful</h2>
-        <p className="section-body" style={{ marginBottom: "2.5rem" }}>
+        <p className="section-body" style={{ marginBottom: "2.5rem", color: "black", fontWeight: 400 }}>
           Your free design consultation is one message away. Tell us your space — we'll handle the rest.
         </p>
 
@@ -381,6 +400,37 @@ function CTABanner() {
   );
 }
 
+/* ── Showroom Map ─────────────────────────────────────────────────── */
+function ShowroomMap() {
+  return (
+    <section id="showroom-map" className="section showroom-map">
+      <div className="container">
+        <div className="reveal" style={{ textAlign: "center", marginBottom: "3rem" }}>
+          <p className="section-eyebrow">Visit Us</p>
+          <span className="gold-rule" />
+          <h2 className="section-headline serif">Find Our Showroom</h2>
+          <p className="section-body" style={{ maxWidth: "480px", margin: "0 auto", color: "black", fontWeight: 400 }}>
+            Come see the craftsmanship in person. Our showroom is open for visits — no appointment needed.
+          </p>
+          <p className="showroom-address">
+            Agrabad Access Road, Chattogram, Bangladesh &nbsp;·&nbsp;
+            <a href="tel:+8801960481983">+880 1960-481983</a>
+          </p>
+        </div>
+        <div className="map-wrapper reveal">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.63800047075!2d91.7905206793457!3d22.329526399999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30acd999401bf62b%3A0xcd9639571c8d5c27!2sHeaven%20Furniture%20Mart!5e0!3m2!1sen!2sbd!4v1788029592032!5m2!1sen!2sbd"
+            title="Heaven Furniture Mart Showroom Location"
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ── Footer ─────────────────────────────────────────────────── */
 function Footer() {
   return (
@@ -388,8 +438,9 @@ function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div>
-            <p className="footer-logo serif">Heaven Furniture Mart</p>
-            <p className="footer-logo-sub">Designed · Crafted · Customized</p>
+            <img src={logo} alt="Heaven Furniture Mart" className="footer-logo-img" />
+            {/* <p className="footer-logo-sub">Designed · Crafted · Customized</p> */}
+            <br></br>
             <p className="footer-desc">
               Chattogram's bespoke furniture studio — crafting custom living, bedroom, dining, and office furniture since 2020.
             </p>
@@ -447,6 +498,7 @@ export default function App() {
       <Milestones />
       <Proof />
       <CTABanner />
+      <ShowroomMap />
       <Footer />
     </>
   );
