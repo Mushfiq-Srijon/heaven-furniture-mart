@@ -178,28 +178,28 @@ const COLLECTIONS = [
     tag: "Living Room",
     title: "Sofas & Living Pieces",
     desc: "Statement sofas, coffee tables, TV units, and consoles — designed to anchor your living space with warmth and intention.",
-    img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=900&q=80",
+    img: "/src/assets/sofa.png",
     reverse: false,
   },
   {
     tag: "Bedroom",
     title: "Beds & Bedroom Furniture",
     desc: "Handcrafted beds, wardrobes, dressing tables, and bedside pieces built to make your private space feel like a retreat.",
-    img: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&q=80",
+    img: "/src/assets/bedroom.png",
     reverse: true,
   },
   {
     tag: "Dining",
     title: "Dining Tables & Sets",
     desc: "From intimate four-seaters to grand family tables — every dining set is built to bring people together in style.",
-    img: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=900&q=80",
+    img: "/src/assets/dining.png",
     reverse: false,
   },
   {
     tag: "Office & Study",
     title: "Workspaces That Work",
     desc: "Executive desks, bookshelves, and custom workstations — furniture that respects how seriously you take your work.",
-    img: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=900&q=80",
+    img: "/src/assets/office.png",
     reverse: true,
   },
 ];
@@ -365,7 +365,7 @@ function Proof() {
           </div>
           <div className="proof-img reveal-right">
             <img
-              src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=800&q=80"
+              src="/src/assets/trusted.png"
               alt="Heaven Furniture Mart Showroom"
               loading="lazy"
             />
