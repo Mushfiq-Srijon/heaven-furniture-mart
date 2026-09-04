@@ -3,6 +3,19 @@ import logo from "./assets/logo.png";
 import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import founderImg from "./assets/collections/founder.webp";
 import showroomImg from "./assets/collections/showroom.webp";
+import living1 from "./assets/collections/living-1.webp";
+import living2 from "./assets/collections/living-2.webp";
+import living3 from "./assets/collections/living-3.webp";
+
+import bedroom1 from "./assets/collections/bedroom-1.webp";
+import bedroom2 from "./assets/collections/bedroom-2.webp";
+import bedroom3 from "./assets/collections/bedroom-3.webp";
+
+import dining1 from "./assets/collections/dining-1.webp";
+import dining2 from "./assets/collections/dining-2.webp";
+
+import office1 from "./assets/collections/office-1.webp";
+import office2 from "./assets/collections/office-2.webp";
 
 /* ── Splash Screen ────────────────────────────────────────── */
 function SplashScreen({ phase, onLanded }) {
@@ -326,42 +339,28 @@ const COLLECTIONS = [
     tag: "Living Room",
     title: "Sofas & Living Pieces",
     desc: "Statement sofas, coffee tables, TV units, and consoles — designed to anchor your living space with warmth and intention.",
-    images: [
-      "/src/assets/collections/living-1.webp",
-      "/src/assets/collections/living-2.webp",
-      "/src/assets/collections/living-3.webp",
-    ],
+    images: [living1, living2, living3],
     reverse: false,
   },
   {
     tag: "Bedroom",
     title: "Beds & Bedroom Furniture",
     desc: "Handcrafted beds, wardrobes, dressing tables, and bedside pieces built to make your private space feel like a retreat.",
-    images: [
-      "/src/assets/collections/bedroom-1.webp",
-      "/src/assets/collections/bedroom-2.webp",
-      "/src/assets/collections/bedroom-3.webp",
-    ],
+    images: [bedroom1, bedroom2, bedroom3],
     reverse: true,
   },
   {
     tag: "Dining",
     title: "Dining Tables & Sets",
     desc: "From intimate four-seaters to grand family tables — every dining set is built to bring people together in style.",
-    images: [
-      "/src/assets/collections/dining-1.webp",
-      "/src/assets/collections/dining-2.webp",
-    ],
+    images: [dining1, dining2],
     reverse: false,
   },
   {
     tag: "Office & Study",
     title: "Workspaces That Work",
     desc: "Executive desks, bookshelves, and custom workstations — furniture that respects how seriously you take your work.",
-    images: [
-      "/src/assets/collections/office-1.webp",
-      "/src/assets/collections/office-2.webp",
-    ],
+    images: [office1, office2],
     reverse: true,
   },
 ];

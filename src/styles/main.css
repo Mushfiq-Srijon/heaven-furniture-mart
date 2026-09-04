@@ -353,7 +353,7 @@ body {
 .hero-bg {
     position: absolute;
     inset: 0;
-    background-image: url('src/assets/hero.webp');
+    background-image: url('/hero.webp');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -908,7 +908,7 @@ body {
 .bespoke-bg {
     position: absolute;
     inset: 0;
-    background-image: url('src/assets/bespoke.webp');
+    background-image: url('/bespoke.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
