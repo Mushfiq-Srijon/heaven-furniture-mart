@@ -1,7 +1,90 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import logo from "./assets/logo.png";
 import { FaFacebookF, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
+import founderImg from "./assets/collections/founder.webp";
+import showroomImg from "./assets/collections/showroom.webp";
 
+/* ── Splash Screen ────────────────────────────────────────── */
+function SplashScreen({ phase, onLanded }) {
+  const splashLogoRef = useRef(null);
+  const [flyStyle, setFlyStyle] = useState(null);
+  const hasFlown = useRef(false);
+  const hasSettled = useRef(false);
+
+  // Start the flight the moment we enter "flying"
+  useEffect(() => {
+    if (phase !== "flying" || hasFlown.current) return;
+    hasFlown.current = true;
+
+    const splashEl = splashLogoRef.current;
+    const navEl = document.querySelector(".nav-logo-img");
+    if (!splashEl || !navEl) return;
+
+    const from = splashEl.getBoundingClientRect();
+    const to = navEl.getBoundingClientRect();
+
+    setFlyStyle({
+      position: "fixed",
+      top: from.top,
+      left: from.left,
+      width: from.width,
+      height: from.height,
+      zIndex: 1000,
+      opacity: 1,
+      objectFit: "contain",
+      pointerEvents: "none",
+      transition: "none",
+    });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setFlyStyle((prev) => ({
+          ...prev,
+          top: to.top,
+          left: to.left,
+          width: to.width,
+          height: to.height,
+          transition: [
+            "top 0.75s cubic-bezier(0.22,1,0.36,1)",
+            "left 0.75s cubic-bezier(0.22,1,0.36,1)",
+            "width 0.75s cubic-bezier(0.22,1,0.36,1)",
+            "height 0.75s cubic-bezier(0.22,1,0.36,1)",
+          ].join(", "),
+        }));
+      });
+    });
+  }, [phase]);
+
+
+
+  const handleCloneTransitionEnd = (e) => {
+    if (phase === "flying" && e.propertyName === "top") onLanded();
+  };
+
+  const showOriginal = phase === "enter" || phase === "hold";
+
+  return (
+    <>
+      {flyStyle && phase === "flying" && (
+        <img src={logo} alt="" style={flyStyle} onTransitionEnd={handleCloneTransitionEnd} />
+      )}
+
+      <div className={`splash splash--${phase}`}>
+        <div className="splash-inner">
+          <img
+            ref={splashLogoRef}
+            src={logo}
+            alt="Heaven Furniture Mart"
+            className={`splash-logo${!showOriginal ? " splash-logo--hidden" : ""}`}
+          />
+          <span className={`splash-tagline${!showOriginal ? " splash-tagline--hide" : ""}`}>
+            Designed · Crafted · Customized
+          </span>
+        </div>
+      </div>
+    </>
+  );
+}
 /* ── useScrollReveal ────────────────────────────────────────── */
 function useScrollReveal() {
   useEffect(() => {
@@ -23,28 +106,93 @@ function useScrollReveal() {
 }
 
 /* ── Nav ────────────────────────────────────────────────────── */
-function Nav() {
+function Nav({ logoVisible, chromeVisible }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [activeId, setActiveId] = useState("");
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", fn);
-    return () => window.removeEventListener("scroll", fn);
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const links = ["Collections", "Bespoke", "Why Us", "Contact"];
-  const ids = ["collections", "bespoke", "why", "contact"];
+  useEffect(() => {
+    const sectionIds = [
+      "about",
+      "why",
+      "collections",
+      "bespoke",
+      "milestones",
+      "contact",
+    ];
+
+    const observers = [];
+
+    // Observe all navigation sections
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+
+      if (!el) return;
+
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveId(id);
+          }
+        },
+        {
+          rootMargin: "-20% 0px -70% 0px",
+          threshold: 0,
+        }
+      );
+
+      io.observe(el);
+      observers.push(io);
+    });
+
+    // Observe the hero separately
+    const hero = document.getElementById("hero");
+
+    if (hero) {
+      const heroObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setActiveId("");
+          }
+        },
+        {
+          threshold: 0.1,
+        }
+      );
+
+      heroObserver.observe(hero);
+      observers.push(heroObserver);
+    }
+
+    return () => observers.forEach((io) => io.disconnect());
+  }, []);
+
+  const links = ["About", "Why Us", "Collections", "Bespoke", "Our Journey", "Contact"];
+  const ids = ["about", "why", "collections", "bespoke", "milestones", "contact"];
 
   return (
     <>
       <nav className={`nav${scrolled ? " scrolled" : ""}`}>
         <a href="#hero" className="nav-logo">
-          <img src={logo} alt="Heaven Furniture Mart" className="nav-logo-img" />
+          <img
+            src={logo}
+            alt="Heaven Furniture Mart"
+            className="nav-logo-img"
+            style={{ opacity: logoVisible ? 1 : 0, transition: "none" }}
+          />
         </a>
-        <div className="nav-links">
+
+        <div className={`nav-links${chromeVisible ? " nav-links--visible" : ""}`}>
           {links.map((l, i) => (
-            <a key={l} href={`#${ids[i]}`}>{l}</a>
+            <a key={l} href={`#${ids[i]}`} className={activeId === ids[i] ? "nav-link-active" : ""}>
+              {l}
+            </a>
           ))}
 
           <a href="https://wa.me/8801960481983?text=Hi%2C%20I%27d%20like%20to%20request%20a%20design%20consultation."
@@ -55,32 +203,32 @@ function Nav() {
             Get a Quote
           </a>
         </div>
-        <div className="nav-hamburger" onClick={() => setOpen(prev => !prev)}>
+
+        <div
+          className={`nav-hamburger${chromeVisible ? " nav-hamburger--visible" : ""}`}
+          onClick={() => setOpen((p) => !p)}
+        >
           <span /><span /><span />
         </div>
       </nav>
 
       <div className={`mobile-menu${open ? " open" : ""}`} onClick={() => setOpen(false)}>
         {links.map((l, i) => (
-          <a key={l} href={`#${ids[i]}`}>{l}</a>
+          <a key={l} href={`#${ids[i]}`} className={activeId === ids[i] ? "nav-link-active" : ""}>
+            {l}
+          </a>
         ))}
-
-        <a href="https://wa.me/8801960481983"
-          className="btn-gold"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://wa.me/8801960481983" className="btn-gold" target="_blank" rel="noreferrer">
           Get a Quote
         </a>
       </div>
     </>
   );
 }
-
 /* ── Hero ───────────────────────────────────────────────────── */
-function Hero() {
+function Hero({ shimmerReady }) {
   return (
-    <section id="hero" className="hero">
+    <section id="hero" className={`hero${shimmerReady ? " hero--shimmer" : ""}`}>
       <div className="hero-bg" />
       <div className="hero-overlay" />
       <div className="hero-content">
@@ -178,31 +326,132 @@ const COLLECTIONS = [
     tag: "Living Room",
     title: "Sofas & Living Pieces",
     desc: "Statement sofas, coffee tables, TV units, and consoles — designed to anchor your living space with warmth and intention.",
-    img: "/src/assets/sofa.png",
+    images: [
+      "/src/assets/collections/living-1.webp",
+      "/src/assets/collections/living-2.webp",
+      "/src/assets/collections/living-3.webp",
+    ],
     reverse: false,
   },
   {
     tag: "Bedroom",
     title: "Beds & Bedroom Furniture",
     desc: "Handcrafted beds, wardrobes, dressing tables, and bedside pieces built to make your private space feel like a retreat.",
-    img: "/src/assets/bedroom.png",
+    images: [
+      "/src/assets/collections/bedroom-1.webp",
+      "/src/assets/collections/bedroom-2.webp",
+      "/src/assets/collections/bedroom-3.webp",
+    ],
     reverse: true,
   },
   {
     tag: "Dining",
     title: "Dining Tables & Sets",
     desc: "From intimate four-seaters to grand family tables — every dining set is built to bring people together in style.",
-    img: "/src/assets/dining.png",
+    images: [
+      "/src/assets/collections/dining-1.webp",
+      "/src/assets/collections/dining-2.webp",
+    ],
     reverse: false,
   },
   {
     tag: "Office & Study",
     title: "Workspaces That Work",
     desc: "Executive desks, bookshelves, and custom workstations — furniture that respects how seriously you take your work.",
-    img: "/src/assets/office.png",
+    images: [
+      "/src/assets/collections/office-1.webp",
+      "/src/assets/collections/office-2.webp",
+    ],
     reverse: true,
   },
 ];
+
+function CollectionCarousel({ images }) {
+  const [current, setCurrent] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const startX = useRef(0);
+  const timerRef = useRef(null);
+
+  const next = useCallback(() => {
+    setCurrent((p) => (p + 1) % images.length);
+  }, [images.length]);
+
+  const prev = () => {
+    setCurrent((p) => (p - 1 + images.length) % images.length);
+  };
+
+  const resetTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(next, 3500);
+  }, [next]);
+
+  useEffect(() => {
+    resetTimer();
+    return () => clearInterval(timerRef.current);
+  }, [resetTimer]);
+
+  // Touch
+  const onTouchStart = (e) => {
+    startX.current = e.touches[0].clientX;
+    setDragging(true);
+  };
+  const onTouchEnd = (e) => {
+    if (!dragging) return;
+    const diff = startX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) {
+      diff > 0 ? next() : prev();
+      resetTimer();
+    }
+    setDragging(false);
+  };
+
+  // Mouse drag
+  const onMouseDown = (e) => {
+    startX.current = e.clientX;
+    setDragging(true);
+  };
+  const onMouseUp = (e) => {
+    if (!dragging) return;
+    const diff = startX.current - e.clientX;
+    if (Math.abs(diff) > 40) {
+      diff > 0 ? next() : prev();
+      resetTimer();
+    }
+    setDragging(false);
+  };
+
+  return (
+    <div
+      className="carousel"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+    >
+      <div className="carousel-track" style={{ transform: `translateX(-${current * 100}%)` }}>
+        {images.map((src, i) => (
+          <img key={i} src={src} alt="" className="carousel-slide" draggable={false} />
+        ))}
+      </div>
+      {images.length > 1 && (
+        <>
+          <button className="carousel-btn carousel-btn--prev" onClick={() => { prev(); resetTimer(); }} aria-label="Previous">‹</button>
+          <button className="carousel-btn carousel-btn--next" onClick={() => { next(); resetTimer(); }} aria-label="Next">›</button>
+          <div className="carousel-dots">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                className={`carousel-dot${i === current ? " active" : ""}`}
+                onClick={() => { setCurrent(i); resetTimer(); }}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 function Collections() {
   return (
@@ -217,7 +466,7 @@ function Collections() {
       {COLLECTIONS.map((c, i) => (
         <div key={i} className={`coll-item${c.reverse ? " reverse" : ""}`}>
           <div className={`coll-img ${c.reverse ? "reveal-right" : "reveal-left"}`}>
-            <img src={c.img} alt={c.title} loading="lazy" />
+            <CollectionCarousel images={c.images} />
           </div>
           <div className={`coll-body ${c.reverse ? "reveal-left" : "reveal-right"}`}>
             <p className="coll-tag">{c.tag}</p>
@@ -234,19 +483,6 @@ function Collections() {
           </div>
         </div>
       ))}
-            <div className="coll-catalog reveal">
-          <p className="coll-catalog-text">
-            Explore our complete range of bespoke furniture — from living room to office, every piece built to order.
-          </p>
-          
-          <a href="https://wa.me/8801960481983?text=Hi%2C%20I%27d%20like%20to%20view%20the%20full%20furniture%20catalog."
-            className="btn-catalog"
-            target="_blank"
-            rel="noreferrer"
-          >
-            View Full Catalog
-          </a>
-        </div>
     </section>
   );
 }
@@ -309,7 +545,7 @@ const MILESTONES = [
 
 function Milestones() {
   return (
-    <section className="section milestones">
+    <section id="milestones" className="section milestones">
       <div className="container">
         <div className="reveal" style={{ textAlign: "center" }}>
           <p className="section-eyebrow">Our Journey</p>
@@ -342,10 +578,10 @@ function Proof() {
         <div className="proof-grid">
           <div className="reveal-left">
             <p className="section-eyebrow" style={{ color: "#B8965A", marginBottom: "1.5rem" }}>
-              Trusted by Hundreds
+              A Word From the Founder
             </p>
             <p className="proof-quote">
-              "At Heaven Furniture Mart, we believe furniture is more than just function; it is a reflection of lifestyle, taste, and comfort."
+              "At Heaven Furniture Mart, we believe furniture is more than just function; it is a reflection of lifestyle, taste, and comfort. Every piece we create is designed to bring lasting elegance into the homes of our clients."
             </p>
             <p className="proof-attr">— Abul Kalam Bhuiyan, Managing Director</p>
             <div className="proof-stat">
@@ -363,12 +599,18 @@ function Proof() {
               </div>
             </div>
           </div>
-          <div className="proof-img reveal-right">
-            <img
-              src="/src/assets/trusted.png"
-              alt="Heaven Furniture Mart Showroom"
-              loading="lazy"
-            />
+          <div className="proof-founder reveal-right">
+            <div className="founder-img-wrap">
+              <img
+                src={founderImg}
+                alt="Abul Kalam Bhuiyan — Managing Director, Heaven Furniture Mart"
+                className="founder-img"
+              />
+              <div className="founder-caption">
+                <p className="founder-name serif">Abul Kalam Bhuiyan</p>
+                <p className="founder-title">Managing Director</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -405,26 +647,54 @@ function ShowroomMap() {
   return (
     <section id="showroom-map" className="section showroom-map">
       <div className="container">
-        <div className="reveal" style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <p className="section-eyebrow">Visit Us</p>
-          <span className="gold-rule" />
-          <h2 className="section-headline serif">Find Our Showroom</h2>
-          <p className="section-body" style={{ maxWidth: "480px", margin: "0 auto", color: "black", fontWeight: 400 }}>
-            Come see the craftsmanship in person. Our showroom is open for visits — no appointment needed.
-          </p>
-          <p className="showroom-address">
-            Agrabad Access Road, Chattogram, Bangladesh &nbsp;·&nbsp;
-            <a href="tel:+8801960481983">+880 1960-481983</a>
-          </p>
-        </div>
-        <div className="map-wrapper reveal">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.63800047075!2d91.7905206793457!3d22.329526399999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30acd999401bf62b%3A0xcd9639571c8d5c27!2sHeaven%20Furniture%20Mart!5e0!3m2!1sen!2sbd!4v1788029592032!5m2!1sen!2sbd"
-            title="Heaven Furniture Mart Showroom Location"
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+        <div className="showroom-inner">
+          <div className="showroom-info reveal-left">
+            <p className="section-eyebrow">Find Us</p>
+            <span className="gold-rule-left" />
+            <h2 className="showroom-headline serif">
+              Visit Our<br />Showroom
+            </h2>
+            <p className="showroom-desc">
+              Come see the craftsmanship in person. Walk through our full showroom — no appointment needed. Our team is always on hand to help you find exactly what your space deserves.
+            </p>
+            <div className="showroom-details">
+              <div className="showroom-detail-row">
+                <span className="showroom-detail-label">Address</span>
+                <span className="showroom-detail-value">Agrabad Access Road, Chattogram, Bangladesh</span>
+              </div>
+              <div className="showroom-detail-row">
+                <span className="showroom-detail-label">Phone</span>
+                <a href="tel:+8801960481983" className="showroom-detail-value showroom-link">+880 1960-481983</a>
+              </div>
+              <div className="showroom-detail-row">
+                <span className="showroom-detail-label">Email</span>
+                <a href="mailto:heavenfurnituremart@gmail.com" className="showroom-detail-value showroom-link">heavenfurnituremart@gmail.com</a>
+              </div>
+            </div>
+
+            <a href="https://wa.me/8801960481983?text=Hi%2C%20I%27d%20like%20to%20visit%20the%20showroom."
+              className="btn-gold"
+              target="_blank"
+              rel="noreferrer"
+              style={{ marginTop: "2rem", display: "inline-flex" }}
+            >
+              Plan My Visit
+            </a>
+          </div>
+          <div className="showroom-map-wrap reveal-right">
+            <img
+              src={showroomImg}
+              alt="Heaven Furniture Mart showroom interior"
+              className="showroom-photo"
+            />
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3690.63800047075!2d91.7905206793457!3d22.329526399999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30acd999401bf62b%3A0xcd9639571c8d5c27!2sHeaven%20Furniture%20Mart!5e0!3m2!1sen!2sbd!4v1788029592032!5m2!1sen!2sbd"
+              title="Heaven Furniture Mart Showroom Location"
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -484,22 +754,80 @@ function Footer() {
   );
 }
 
-/* ── App ────────────────────────────────────────────────────── */
+/* ── Floating whatsapp ─────────────────────────────────────────────────── */
+function FloatingWhatsApp() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const fn = () => setVisible(window.scrollY > 300);
+    window.addEventListener("scroll", fn);
+    return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  return (
+
+    <a href="https://wa.me/8801960481983?text=Hi%2C%20I%27d%20like%20to%20know%20more%20about%20Heaven%20Furniture%20Mart."
+      className={`floating-wa${visible ? " floating-wa--visible" : ""}`}
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Chat on WhatsApp"
+    >
+      <FaWhatsapp />
+    </a>
+  );
+}
+
+function useSplashSequence() {
+  const [phase, setPhase] = useState("enter"); // enter -> hold -> flying -> settled -> done
+  const landedRef = useRef(false);
+
+  useEffect(() => {
+    const timers = [
+      setTimeout(() => setPhase("hold"), 900),
+      setTimeout(() => setPhase("flying"), 2000),
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, []);
+
+  // Called by SplashScreen the instant the flying logo's CSS transition
+  // actually finishes — no hardcoded duration to keep in sync.
+  const handleLanded = useCallback(() => {
+    if (landedRef.current) return;
+    landedRef.current = true;
+    setPhase("settled");
+    setTimeout(() => setPhase("done"), 700); // chrome fade (0.6s) + a short pause
+  }, []);
+
+  return { phase, handleLanded };
+}
+
+/* ── App ─────────────────────────────────────────────────── */
 export default function App() {
+  const { phase, handleLanded } = useSplashSequence();
   useScrollReveal();
+
+  const contentVisible = phase === "flying" || phase === "settled" || phase === "done";
+  const logoSettled = phase === "settled" || phase === "done";
+  const chromeVisible = phase === "settled" || phase === "done";
+  const shimmerReady = phase === "done";
+
   return (
     <>
-      <Nav />
-      <Hero />
-      <BrandIntro />
-      <WhyChoose />
-      <Collections />
-      <Bespoke />
-      <Milestones />
-      <Proof />
-      <CTABanner />
-      <ShowroomMap />
-      <Footer />
+      {phase !== "done" && <SplashScreen phase={phase} onLanded={handleLanded} />}
+      <div className={`site-wrapper${contentVisible ? " site-wrapper--visible" : ""}`}>
+        <Nav logoVisible={logoSettled} chromeVisible={chromeVisible} />
+        <Hero shimmerReady={shimmerReady} />
+        <BrandIntro />
+        <WhyChoose />
+        <Collections />
+        <Bespoke />
+        <Milestones />
+        <Proof />
+        <CTABanner />
+        <ShowroomMap />
+        <Footer />
+        <FloatingWhatsApp />
+      </div>
     </>
   );
 }

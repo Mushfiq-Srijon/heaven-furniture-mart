@@ -1,13 +1,54 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>heaven-furniture-mart</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heaven Furniture Mart</title>
+
+  <script>
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+
+    // Background
+    ctx.fillStyle = '#1C2226';
+    ctx.fillRect(0, 0, 64, 64);
+
+    // Initials
+    ctx.fillStyle = '#B8965A';
+    ctx.font = '600 28px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('HF', 32, 33);
+
+    const link = document.createElement('link');
+    link.rel = 'icon';
+    link.href = canvas.toDataURL();
+    document.head.appendChild(link);
+  </script>
+
+  <meta name="description"
+    content="Heaven Furniture Mart — Chattogram's leading bespoke furniture studio. Custom sofas, beds, dining sets, and office furniture. Designed, crafted, and built around you." />
+
+  <meta property="og:title" content="Heaven Furniture Mart — Bespoke Furniture, Chattogram" />
+  <meta property="og:description"
+    content="Custom furniture designed and crafted around your space, taste, and lifestyle. Free design consultation. Delivery and installation included." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og-image.jpg" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Heaven Furniture Mart — Bespoke Furniture, Chattogram" />
+  <meta name="twitter:description"
+    content="Custom furniture designed and crafted around your space, taste, and lifestyle." />
+  <meta name="twitter:image" content="/og-image.jpg" />
+  
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
